@@ -32,3 +32,4 @@
 /Users/pawanjotsingh/Desktop/Projects/internal-support-ticket-dashboard/TicketDashboard.Api/obj/Debug/net9.0/TicketDashboard.Api.pdb
 /Users/pawanjotsingh/Desktop/Projects/internal-support-ticket-dashboard/TicketDashboard.Api/obj/Debug/net9.0/TicketDashboard.Api.genruntimeconfig.cache
 /Users/pawanjotsingh/Desktop/Projects/internal-support-ticket-dashboard/TicketDashboard.Api/obj/Debug/net9.0/ref/TicketDashboard.Api.dll
+/Users/pawanjotsingh/Desktop/Projects/internal-support-ticket-dashboard/TicketDashboard.Api/obj/Debug/net9.0/TicketDashboard.Api.sourcelink.json

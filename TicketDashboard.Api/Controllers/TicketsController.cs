@@ -7,6 +7,8 @@ namespace TicketDashboard.Api.Controllers;
 [Route("api/[controller]")]
 public class TicketsController : ControllerBase
 {
+    private static int nextId = 5;
+
       private static List<Ticket> tickets = new List<Ticket>
       { 
             new Ticket
@@ -64,6 +66,7 @@ public class TicketsController : ControllerBase
     [HttpPost]
     public ActionResult<Ticket> CreateTicket(Ticket newTicket)
     {
+        newTicket.Id = nextId++;
         tickets.Add(newTicket);
         return Ok(newTicket);
     }
@@ -100,8 +103,6 @@ public class TicketsController : ControllerBase
 
         return NoContent();
     }
-
-
 
 
 }

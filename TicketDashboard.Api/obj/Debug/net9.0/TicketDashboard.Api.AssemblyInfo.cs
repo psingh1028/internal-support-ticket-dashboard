@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TicketDashboard.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2a7366bfffdb815010a565bb92878a464e0e052")]
 [assembly: System.Reflection.AssemblyProductAttribute("TicketDashboard.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TicketDashboard.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
