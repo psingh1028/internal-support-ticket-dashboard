@@ -7,9 +7,16 @@ namespace TicketDashboard.Api.Controllers;
 [Route("api/[controller]")]
 public class TicketsController : ControllerBase
 {
-    private static int nextId = 5;
+   // private static int nextId = 5; //left for syntax reference only
+    private readonly AppDbContext _context;
 
-      private static List<Ticket> tickets = new List<Ticket>
+    public TicketsController(AppDbContext context)
+    {
+        _context = context;
+
+    }
+    // old list left for syntax reference only
+     /* private static List<Ticket> tickets = new List<Ticket>
       { 
             new Ticket
             {
@@ -43,18 +50,18 @@ public class TicketsController : ControllerBase
                 Status = "Open",
                 Priority = "Low"
             }
-        };
+        };*/
 
     [HttpGet]
     public ActionResult<IEnumerable<Ticket>> GetTickets()
     {
-        return Ok(tickets);
+        return Ok(_context.Tickets.ToList());
     }
 
     [HttpGet("{id}")]
     public ActionResult<Ticket> GetTicketById(int id)
     {
-        var ticket = tickets.FirstOrDefault(t => t.Id == id);
+        var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
 
         if(ticket == null)
         {
@@ -66,40 +73,66 @@ public class TicketsController : ControllerBase
     [HttpPost]
     public ActionResult<Ticket> CreateTicket(Ticket newTicket)
     {
-        newTicket.Id = nextId++;
-        tickets.Add(newTicket);
-        return Ok(newTicket);
+        // newTicket.Id = nextId++;
+        // tickets.Add(newTicket);
+        _context.Tickets.Add(newTicket);
+        _context.SaveChanges();
+        return CreatedAtAction(
+          nameof(GetTicketById),
+          new { id = newTicket.Id },
+          newTicket
+        );
     }
 
-    [HttpPost("{id}")]
+    [HttpPut("{id}")]
     public ActionResult<Ticket> UpdateTicket(int id, Ticket updatedTicket)
     {
-        var ticket = tickets.FirstOrDefault(t => t.Id == id);
+        var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
 
         if (ticket == null)
         {
             return NotFound();
         }
+        if (updatedTicket.Title == null || updatedTicket.Title == "")
+        {
+            return BadRequest("Missing Title");
+        }
+        if (updatedTicket.Description == null || updatedTicket.Description == "")
+        {
+            return BadRequest("Missing Description");
+        }
+        if (updatedTicket.Status == null || updatedTicket.Status == "")
+        {
+            return BadRequest("Missing Status");
+        }
+        if (updatedTicket.Priority == null || updatedTicket.Priority == "")
+        {
+            return BadRequest("Missing Priority");
+        }
+        
+            ticket.Title = updatedTicket.Title;
+            ticket.Description = updatedTicket.Description;
+            ticket.Status = updatedTicket.Status;
+            ticket.Priority = updatedTicket.Priority;
 
-        ticket.Title = updatedTicket.Title;
-        ticket.Description = updatedTicket.Description;
-        ticket.Status = updatedTicket.Status;
-        ticket.Priority = updatedTicket.Priority;
 
+
+        _context.SaveChanges();
         return Ok(ticket);
     }
 
     [HttpDelete("{id}")]
-    public ActionResult<Ticket> DeleteTicket(int id)
+    public ActionResult DeleteTicket(int id)
     {
-        var ticket = tickets.FirstOrDefault(t => t.Id == id);
+        var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
 
         if (ticket == null)
         {
             return NotFound();
         }
 
-        tickets.Remove(ticket);
+        _context.Tickets.Remove(ticket);
+        _context.SaveChanges();
 
         return NoContent();
     }
