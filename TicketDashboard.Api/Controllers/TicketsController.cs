@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TicketDashboard.Api.Models;
+using TicketDashboard.Api.Dtos;
 
 namespace TicketDashboard.Api.Controllers;
 
@@ -53,15 +55,16 @@ public class TicketsController : ControllerBase
         };*/
 
     [HttpGet]
-    public ActionResult<IEnumerable<Ticket>> GetTickets()
+    public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets()
     {
-        return Ok(_context.Tickets.ToList());
+        var tickets = await _context.Tickets.ToListAsync();
+        return Ok(tickets);
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Ticket> GetTicketById(int id)
+    public async Task<ActionResult<Ticket>> GetTicketById(int id)
     {
-        var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
+        var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
 
         if(ticket == null)
         {
@@ -71,12 +74,19 @@ public class TicketsController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<Ticket> CreateTicket(Ticket newTicket)
+    public async Task<ActionResult<Ticket>> CreateTicket(CreateTicketDto dtoTicket)
     {
-        // newTicket.Id = nextId++;
-        // tickets.Add(newTicket);
+
+        Ticket newTicket = new Ticket {
+        Title = dtoTicket.Title,
+        Description = dtoTicket.Description,
+        Status = dtoTicket.Status,
+        Priority = dtoTicket.Priority,
+        CreatedAt = DateTime.UtcNow
+        };
+
         _context.Tickets.Add(newTicket);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return CreatedAtAction(
           nameof(GetTicketById),
           new { id = newTicket.Id },
@@ -85,9 +95,9 @@ public class TicketsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public ActionResult<Ticket> UpdateTicket(int id, Ticket updatedTicket)
+    public async Task<ActionResult<Ticket>> UpdateTicket(int id, Ticket updatedTicket)
     {
-        var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
+        var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
 
         if (ticket == null)
         {
@@ -98,7 +108,7 @@ public class TicketsController : ControllerBase
             return BadRequest("Missing Title");
         }
         if (updatedTicket.Description == null || updatedTicket.Description == "")
-        {
+        { 
             return BadRequest("Missing Description");
         }
         if (updatedTicket.Status == null || updatedTicket.Status == "")
@@ -117,14 +127,14 @@ public class TicketsController : ControllerBase
 
 
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return Ok(ticket);
     }
 
     [HttpDelete("{id}")]
-    public ActionResult DeleteTicket(int id)
+    public async Task<ActionResult> DeleteTicket(int id)
     {
-        var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
+        var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
 
         if (ticket == null)
         {
@@ -132,7 +142,7 @@ public class TicketsController : ControllerBase
         }
 
         _context.Tickets.Remove(ticket);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
