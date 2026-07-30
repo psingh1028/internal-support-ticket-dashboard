@@ -95,7 +95,7 @@ public class TicketsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Ticket>> UpdateTicket(int id, Ticket updatedTicket)
+    public async Task<ActionResult<Ticket>> UpdateTicket(int id, UpdateTicketDto updatedTicket)
     {
         var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
 
@@ -103,19 +103,19 @@ public class TicketsController : ControllerBase
         {
             return NotFound();
         }
-        if (updatedTicket.Title == null || updatedTicket.Title == "")
+        if (string.IsNullOrWhiteSpace(updatedTicket.Title))
         {
             return BadRequest("Missing Title");
         }
-        if (updatedTicket.Description == null || updatedTicket.Description == "")
+        if (string.IsNullOrWhiteSpace(updatedTicket.Description))
         { 
             return BadRequest("Missing Description");
         }
-        if (updatedTicket.Status == null || updatedTicket.Status == "")
+        if (string.IsNullOrWhiteSpace(updatedTicket.Status))
         {
             return BadRequest("Missing Status");
         }
-        if (updatedTicket.Priority == null || updatedTicket.Priority == "")
+        if (string.IsNullOrWhiteSpace(updatedTicket.Priority))
         {
             return BadRequest("Missing Priority");
         }
@@ -124,6 +124,7 @@ public class TicketsController : ControllerBase
             ticket.Description = updatedTicket.Description;
             ticket.Status = updatedTicket.Status;
             ticket.Priority = updatedTicket.Priority;
+
 
 
 
