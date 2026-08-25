@@ -9,6 +9,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     builder.Configuration.GetConnectionString("DefaultConnection")
 ));
 
+builder.Services.AddScoped<TicketService>();
+
+
 // Add Swagger/Swagger UI.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
