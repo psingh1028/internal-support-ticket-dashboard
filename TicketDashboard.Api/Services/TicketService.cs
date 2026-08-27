@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TicketDashboard.Api.Models;
 using TicketDashboard.Api.Dtos;
-public class TicketService
+public class TicketService: ITicketService
 {
     private readonly AppDbContext _context;
     
@@ -18,7 +18,7 @@ public class TicketService
 
     }
 
-    public async Task<List<Ticket>> GetAllTickets(){ // logic for this method is also being handled by service layer
+    public async Task<List<Ticket>> GetTickets(){ // logic for this method is also being handled by service layer
 
         List<Ticket> tickets = await _context.Tickets.ToListAsync();
 
@@ -60,7 +60,7 @@ public class TicketService
         return ticket;
     }
 
-    public async Task<bool> DeleteTicket(int id)
+    public async Task<bool> DeleteTicket(int id) // logic for delete ticket moved to service layer
     {
         var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
 

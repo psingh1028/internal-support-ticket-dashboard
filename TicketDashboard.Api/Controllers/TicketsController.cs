@@ -10,9 +10,9 @@ namespace TicketDashboard.Api.Controllers;
 public class TicketsController : ControllerBase
 {
    // private static int nextId = 5; //left for syntax reference only
-    private readonly TicketService _ticketService; // replacing app db context to ticketserive using Dependency injection
+    private readonly ITicketService _ticketService; // stores the injected ITicketService dependency
 
-    public TicketsController(TicketService service) //now takes in TicketService object
+    public TicketsController(ITicketService service) // receives ITicketService through dependency injection
     {
         _ticketService = service;
 
@@ -57,7 +57,7 @@ public class TicketsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets()
     {
-        var tickets = await _ticketService.GetAllTickets(); // this logic is handled by service layer now
+        var tickets = await _ticketService.GetTickets(); // this logic is handled by service layer now
         return Ok(tickets);
     }
 

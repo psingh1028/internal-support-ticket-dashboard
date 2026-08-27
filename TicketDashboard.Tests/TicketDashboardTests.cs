@@ -16,7 +16,8 @@ public class TicketDashboardTests
 
         var context = new AppDbContext(options);
 
-        var controller = new TicketsController(context);
+        var service = new TicketService(context); //creating new TestTicketObject
+        var controller = new TicketsController(service); // replacing context with TestTicketService object
 
         var result = await controller.GetTicketById(999);
 
@@ -44,7 +45,8 @@ public class TicketDashboardTests
         context.Tickets.Add(ticket);
         await context.SaveChangesAsync();
 
-        var controller = new TicketsController(context);
+        var service = new TicketService(context); //creating new TestTicketObject
+        var controller = new TicketsController(service); // replacing context with TestTicketService object
 
         var result = await controller.GetTicketById(ticket.Id);
 
@@ -65,7 +67,8 @@ public class TicketDashboardTests
 
         var context = new AppDbContext(options);
 
-        var controller = new TicketsController(context);
+        var service = new TicketService(context); //creating new TestTicketObject
+        var controller = new TicketsController(service); // replacing context with TestTicketService object
 
         var ticket = new CreateTicketDto
         {
@@ -96,7 +99,8 @@ public class TicketDashboardTests
 
         var context = new AppDbContext(options);
 
-        var controller = new TicketsController(context);
+        var service = new TicketService(context); //creating new TestTicketObject
+        var controller = new TicketsController(service); // replacing context with TestTicketService object
 
         var result = await controller.DeleteTicket(1);
 
@@ -113,7 +117,8 @@ public class TicketDashboardTests
 
         var context = new AppDbContext(options);
 
-        var controller = new TicketsController(context);
+        var service = new TicketService(context); //creating new TestTicketObject
+        var controller = new TicketsController(service); // replacing context with TestTicketService object
 
         //assign
         var ticket = new Ticket
@@ -140,6 +145,38 @@ public class TicketDashboardTests
 
 
     }
+
+    // [Fact]
+    // public async Task GetTicketById_WhenTicketDoesNotExist_ReturnsNotFound(){
+    //     // Arrange
+    //     var service = new TestTicketService();
+    //     var controller = new TicketsController(service);
+
+    //     // Act
+    //     var result = await controller.GetTicketById(999);
+
+    //     // Assert
+    //     Assert.IsType<NotFoundResult>(result.Result);
+
+    // }
+
+    [Fact]
+    public async Task GetTicketById_WhenTicketExists_ReturnsValidTicket(){
+         //arrange
+         var service = new TestTicketService();
+         var controller = new TicketsController(service);
+        
+        //act
+         var result = await controller.GetTicketById(47);
+
+        //assert
+         var okResult = Assert.IsType<OkObjectResult>(result.Result);
+         Assert.IsType<Ticket>(okResult.Value); 
+
+
+
+    }
+
 
 
 
