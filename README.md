@@ -18,6 +18,14 @@ An ASP.NET Core Web API project for managing internal support tickets.
 - Swagger / OpenAPI
 - Git / GitHub
 
+
+### Local database setup
+
+After restoring packages, apply the EF Core migrations:
+
+```bash
+dotnet ef database update
+
 ## Project Goal
 
 This project is being built to practice and demonstrate backend API development, CRUD operations, and future SQL Server integration.
