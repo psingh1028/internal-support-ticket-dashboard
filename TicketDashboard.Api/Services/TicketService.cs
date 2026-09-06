@@ -53,7 +53,7 @@ public class TicketService: ITicketService
         ticket.Description = dto.Description;
         ticket.Status = dto.Status;
         ticket.Priority = dto.Priority;
-        ticket.CreatedAt = DateTime.UtcNow;
+        //ticket.CreatedAt = DateTime.UtcNow; to be deleted but kept for future reference to error 
 
         await _context.SaveChangesAsync();
 
