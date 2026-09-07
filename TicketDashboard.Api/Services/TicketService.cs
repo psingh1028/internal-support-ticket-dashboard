@@ -12,7 +12,7 @@ public class TicketService: ITicketService
     
     public async Task<Ticket?> GetTicketById(int id){  //this methods search logic is being handled here now 
 
-        var ticket = await _context.Tickets.FirstOrDefaultAsync(t=> t.Id == id); 
+        var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id); 
 
         return ticket;
 
