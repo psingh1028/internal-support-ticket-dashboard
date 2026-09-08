@@ -44,7 +44,7 @@ public class TicketService: ITicketService
 
     public async Task<Ticket?> UpdateTicket(int id, UpdateTicketDto dto) // logic for updateticket handling transfer of dto data to ticket object
     {
-        var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
+        var ticket = await GetTicketById(id);
 
         if (ticket == null)
             return null;
@@ -69,7 +69,7 @@ public class TicketService: ITicketService
 
         _context.Tickets.Remove(ticket);
         await _context.SaveChangesAsync();
-
+        
         return true;
     }
 
