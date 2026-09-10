@@ -20,9 +20,16 @@ jobs:
       run: dotnet restore TicketDashboard.sln
 
     - name: Build solution
-      run: dotnet build TicketDashboard.sln --no-restore 
+      run: dotnet build TicketDashboard.sln --configuration Release --no-restore 
 
     - name: Run tests 
-      run: dotnet test TicketDashboard.sln --no-build 
+      run: dotnet test TicketDashboard.sln --configuration Release --no-build 
 
-    
+    - name: Publish API
+      run: dotnet publish TicketDashboard.Api/TicketDashboard.Api.csproj --configuration Release --output ./publish --no-build  
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with: 
+        name: TicketDashboard-Api
+        path:  ./publish
