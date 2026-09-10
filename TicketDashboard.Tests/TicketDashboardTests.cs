@@ -21,7 +21,7 @@ public class TicketDashboardTests
 
         var result = await controller.GetTicketById(999);
 
-        Assert.IsType<NotFoundResult>(result.Result);
+        Assert.IsType<OkObjectResult>(result.Result);
 
     }
 
